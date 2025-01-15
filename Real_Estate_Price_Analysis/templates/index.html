@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Housing Price Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Enter Property Details</h1>
+        <form action="/predict" id="prediction-form" method="POST">
+            <label for="area">Area (sq ft):</label>
+            <input type="number" id="area" name="area" required>
+            <label for="bedrooms">Bedrooms:</label>
+            <input type="number" id="bedrooms" name="bedrooms" required>
+            <label for="bathrooms">Bathrooms:</label>
+            <input type="number" id="bathrooms" name="bathrooms" required>
+            <label for="stories">Stories:</label>
+            <input type="number" id="stories" name="stories" required>
+            <label for="mainroad">Mainroad (Yes/No):</label>
+            <select id="mainroad" name="mainroad" required>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+            </select>
+            <label for="guestroom">Guestroom (Yes/No):</label>
+            <select id="guestroom" name="guestroom" required>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+            </select>
+            <label for="basement">Basement (Yes/No):</label>
+            <select id="basement" name="basement" required>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+            </select>
+            <label for="hotwaterheating">Hot Water Heating (Yes/No):</label>
+            <select id="hotwaterheating" name="hotwaterheating" required>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+            </select>
+            <label for="airconditioning">Air Conditioning (Yes/No):</label>
+            <select id="airconditioning" name="airconditioning" required>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+            </select>
+            <label for="parking">Parking Spaces:</label>
+            <input type="number" id="parking" name="parking" required>
+            <label for="prefarea">Preferred Area (Yes/No):</label>
+            <select id="prefarea" name="prefarea" required>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+            </select>
+            <label for="furnishingstatus">Furnishing Status:</label>
+            <select id="furnishingstatus" name="furnishingstatus" required>
+                <option value="furnished">Furnished</option>
+                <option value="semi-furnished">Semi-Furnished</option>
+                <option value="unfurnished">Unfurnished</option>
+            </select>
+            <button type="submit">Predict Price</button>
+        </form>
+        <!-- Prediction Result -->
+        <div id="result" class="result"></div>
+        <div id="loading" class="spinner" style="display: none;"></div>
+    </div>
+    <script>
+        // AJAX form submission
+        $('#prediction-form').on('submit', function(event) {
+            event.preventDefault();
+
+            $('#loading').show();
+            $('#result').hide();
+
+            $.ajax({
+                url: "/predict",
+                type: "POST",
+                data: $(this).serialize(),
+                success: function(response) {
+                    $('#loading').hide();
+                    if (response.prediction) {
+                        let formattedPrediction = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(response.prediction);
+                        $('#result').show().text(`Predicted Price: ${formattedPrediction}`);
+                    } else {
+                        $('#result').show().text(response.error || "An error occurred.");
+                    }
+                },
+                error: function() {
+                    $('#loading').hide();
+                    $('#result').show().text("An error occurred.");
+                }
+            });
+        });
+    </script>
+</body>
+</html>
