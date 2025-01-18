@@ -44,3 +44,4 @@ In a fast-paced housing market, accurate price predictions are crucial for infor
 
 ## ⚙️ **Deployment**  
 This application is live on Render. Access it here: [Housing Price Forecasting](https://example-link.com)  
+need to wait 30-50 second for first time opening the link.
