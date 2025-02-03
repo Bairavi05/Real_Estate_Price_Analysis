@@ -9,7 +9,7 @@ In a fast-paced housing market, accurate price predictions are crucial for infor
 - Cleaned and organized raw data.  
 - Encoded categorical features like furnishing status and location.  
 - Scaled numerical values for uniformity.  
-
+ 
 ### **Feature Engineering:**  
 - Created features such as price per square foot and neighborhood demand levels.  
 - Incorporated property market trends to boost prediction accuracy.  
